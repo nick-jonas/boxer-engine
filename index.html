@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Boxer Engine</title>
+    <link rel="stylesheet" href="/src/ui/style.css" />
+  </head>
+  <body>
+    <canvas id="stage"></canvas>
+    <div id="hud">
+      <div class="readout">
+        <span class="label">Crank</span><span id="r-crank" class="value">0&deg;</span>
+        <span class="label">Cycle</span><span id="r-cycle" class="value">0&deg;</span>
+        <span class="label">Stroke</span><span id="r-stroke" class="value">&mdash;</span>
+        <span class="label">RPM</span><span id="r-rpm" class="value">0</span>
+        <span class="label">Pressure</span><span id="r-press" class="value">0 bar</span>
+        <span class="label">Volume</span><span id="r-vol" class="value">0 cc</span>
+      </div>
+      <div class="controls">
+        <label>RPM <input id="c-rpm" type="range" min="300" max="7000" step="50" value="900" /></label>
+        <label>Playback <input id="c-slow" type="range" min="1" max="60" step="1" value="12" /></label>
+        <label>Scrub <input id="c-scrub" type="range" min="0" max="719" step="1" value="0" disabled /></label>
+        <div class="row">
+          <button id="c-play">Pause</button>
+          <button id="c-step">Step 1&deg;</button>
+        </div>
+        <div class="row">
+          <button id="c-quiz" class="primary">Start quiz</button>
+        </div>
+        <div class="row">
+          <button id="c-tutor" data-on="true">Tutor: on</button>
+        </div>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
