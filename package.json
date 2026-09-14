@@ -10,7 +10,12 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "start": "node server/index.js",
-    "heroku-postbuild": "npm run build"
+    "heroku-postbuild": "npm run build",
+    "deploy": "node scripts/deploy.mjs",
+    "deploy:setup": "node scripts/setup-heroku.mjs",
+    "deploy:logs": "heroku logs --tail",
+    "deploy:open": "heroku open",
+    "deploy:config": "heroku config"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.125.0",

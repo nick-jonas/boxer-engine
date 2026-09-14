@@ -12,16 +12,45 @@ npm run build    # typecheck + production build
 
 ## Deploying to Heroku
 
+One-time setup (creates the app and adds the git remote):
+
 ```bash
-heroku create your-app-name
-heroku config:set ANTHROPIC_API_KEY=sk-ant-...   # optional, see below
-git push heroku main
-heroku open
+npm run deploy:setup
 ```
 
-The Node buildpack installs dependencies, runs `heroku-postbuild` (which
-typechecks, tests nothing, and builds to `dist/`), then prunes devDependencies.
-`Procfile` starts `server/index.js`, which serves `dist/` and binds `$PORT`.
+Then, any time you want to ship:
+
+```bash
+npm run deploy
+```
+
+| Script | What it does |
+|---|---|
+| `npm run deploy:setup` | `heroku create` + wire the git remote. Pass a name: `npm run deploy:setup -- my-app` |
+| `npm run deploy` | Preflight checks, then push and report the live URL |
+| `npm run deploy:logs` | Tail the dyno logs |
+| `npm run deploy:open` | Open the deployed app |
+| `npm run deploy:config` | Show the app's config vars |
+
+`npm run deploy` refuses to push when something is wrong, and says what to do
+about it: no Heroku CLI, not logged in, no `heroku` remote, a failing typecheck
+or test, or — the one that actually bites — **uncommitted changes**. Heroku
+builds from what git pushed, so uncommitted work is silently missing from the
+deploy and you end up staring at a live site that does not match your editor.
+
+Two escape hatches:
+
+```bash
+npm run deploy -- --allow-dirty   # push anyway; uncommitted work still won't ship
+npm run deploy -- --skip-checks   # skip typecheck and tests
+```
+
+It pushes `HEAD:main` rather than `main`, so deploying from a feature branch
+sends what you are actually looking at.
+
+Under the hood the Node buildpack installs dependencies, runs `heroku-postbuild`
+(typecheck + `vite build` into `dist/`), then prunes devDependencies. `Procfile`
+starts `server/index.js`, which serves `dist/` and binds `$PORT`.
 
 ### The Claude proxy
 
